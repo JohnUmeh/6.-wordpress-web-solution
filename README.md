@@ -1,4 +1,4 @@
-# 6.-wordpress-web-solution
+# 6.Wordpress-web-solution
 msql, apache, php, wordpress
 
 In this project we will prepare a storage infrastructure on two Linux servers and implement a basic web solution using WordPress. We will use mysql database for its backend Relational Database Management System.
@@ -9,7 +9,7 @@ This project will display the full concept of the three-tier architecture upon w
 
 2: **Business Layer**: This stands for the backend component that implements business logic. Theses are the servers or application.
 
-3. **Data Access or Management Layer (DAL)**: This is the layer for computer data storage and data access. Database Server or File System Server such as FTP server, or NFS Server.
+3. **Data Access or Management Layer (DAL)**: This is the layer for computer data storage and data access. Database Server or File System Server such as    FTP server, or NFS Server.
 
 ![Screenshot from 2023-03-10 18-35-26](https://user-images.githubusercontent.com/77943759/224384376-6db9c34c-aaba-4071-8d02-e27ece791363.png)
 
@@ -19,7 +19,7 @@ REDHAT Os will be used for this project
 
 ![instance](https://user-images.githubusercontent.com/77943759/224384870-60f57ea8-6611-42b2-ae8d-c322c93ceaa6.png)
 
-## **For the Database server(DB-cent)
+## **For the Database server(DB-cent)**
 
 Navigate to the volume section and create 3 volumes, 10G each in the same availability zone of the created insances
 
@@ -106,6 +106,7 @@ Use mkfs.ext4 to format the logical volumes with ext4 filesystem
 sudo mkfs -t ext4 /dev/webdata-vg/apps-lv
 sudo mkfs -t ext4 /dev/webdata-vg/logs-lv
 ```
+![formatext4](https://user-images.githubusercontent.com/77943759/224441972-57e9feba-df45-4858-89b9-101ece88a3fb.png)
 
 
  Create /var/www/html directory to store website files
@@ -118,11 +119,15 @@ Create /home/recovery/logs to store backup of log data
 
 Mount /var/www/html on apps-lv logical volume
 
+
 `sudo mount /dev/webdata-vg/apps-lv /var/www/html/`
 
 We use rsync utility to backup all the files in the log directory /var/log into /home/recovery/logs. We do this before mouting on the /var/log because evrything on the directory will be formatted upon mounting leading to loss of valuable data.
 
 `sudo rsync -av /var/log/. /home/recovery/logs/`
+
+![backuplog](https://user-images.githubusercontent.com/77943759/224442393-ebdad30a-27b8-4020-87b0-44a5a12de5fa.png)
+
 
 Now, we mount on /var/log directory
 
@@ -134,7 +139,7 @@ Return the backed files from /home/recovery/logs
 
 Next we update the /etc/fstab file
 
-Run
+Run:
 
 `sudo blkid`
 
@@ -206,6 +211,8 @@ Install MySQL on your DB Server EC2
 sudo yum update
 sudo yum install mysql-server
 ```
+![Screenshot from 2023-03-10 23-52-15](https://user-images.githubusercontent.com/77943759/224443143-1cc9c766-0b9c-419f-b66a-f6a10e1142b9.png)
+
 
 Check the status if the service is running. Run
 
